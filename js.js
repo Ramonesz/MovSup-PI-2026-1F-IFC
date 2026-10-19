@@ -107,7 +107,7 @@ if (contactSuccessButton) {
 }
 
 if (contactForm && contactSuccess) {
-  contactForm.addEventListener("submit", (event) => {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!contactForm.checkValidity()) {
@@ -115,15 +115,52 @@ if (contactForm && contactSuccess) {
       return;
     }
 
-    contactSuccess.hidden = false;
-    contactForm.style.display = "none";
-    contactSection.classList.add("show-success");
-    if (contactHeading) {
-      contactHeading.textContent = "Obrigado por entrar em contato.";
+    const submitButton = contactForm.querySelector(".contact-submit");
+    const originalLabel = submitButton ? submitButton.textContent : "";
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Enviando...";
     }
-    const successText = contactSuccess.querySelector("p");
-    if (successText) {
-      successText.textContent = "E-mail enviado. Aguarde a nossa resposta. Agradecemos desde já, MovSup.";
+
+    const data = Object.fromEntries(new FormData(contactForm));
+
+    try {
+      const response = await fetch(
+        "https://formsubmit.co/ajax/ramon.anpetry@gmail.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            _subject: "Novo contato pelo site da MovSup",
+            _template: "table",
+            _replyto: data.email,
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Falha no envio");
+
+      contactSuccess.hidden = false;
+      contactForm.style.display = "none";
+      contactSection.classList.add("show-success");
+      if (contactHeading) {
+        contactHeading.textContent = "Obrigado por entrar em contato.";
+      }
+      const successText = contactSuccess.querySelector("p");
+      if (successText) {
+        successText.textContent = "E-mail enviado. Aguarde a nossa resposta. Agradecemos desde já, MovSup.";
+      }
+    } catch (error) {
+      alert("Não foi possível enviar agora. Tente novamente em instantes.");
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalLabel;
+      }
     }
   });
 }
