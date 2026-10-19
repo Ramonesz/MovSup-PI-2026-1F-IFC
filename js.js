@@ -54,3 +54,44 @@ form.onsubmit = (event) => {
   textarea.value = "";
   textarea.focus();
 };
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const closeButton = document.querySelector(".lightbox-close");
+const triggerButtons = document.querySelectorAll(".mvp-trigger");
+
+const openLightbox = (src, alt) => {
+  if (!lightbox || !lightboxImage) return;
+  lightboxImage.src = src;
+  lightboxImage.alt = alt;
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+};
+
+const closeLightbox = () => {
+  if (!lightbox) return;
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+};
+
+triggerButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    openLightbox(button.dataset.src, button.dataset.alt);
+  });
+});
+
+if (closeButton) {
+  closeButton.addEventListener("click", closeLightbox);
+}
+
+if (lightbox) {
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightbox && lightbox.classList.contains("open")) {
+    closeLightbox();
+  }
+});
