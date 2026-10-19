@@ -27,33 +27,118 @@ new IntersectionObserver(
 const form = $("#demo");
 const textarea = $("#t");
 const inbox = $("#inbox");
+const contactForm = $("#contact-form");
+const contactSuccess = $("#contact-success");
 
 $("#ctx").textContent =
   "FinanceiroPro, página Relatórios, " + new Date().toLocaleDateString("pt-BR");
 
-form.onsubmit = (event) => {
-  event.preventDefault();
+if (form && textarea && inbox) {
+  form.onsubmit = (event) => {
+    event.preventDefault();
 
-  const value = textarea.value.trim();
-  if (!value) return;
+    const value = textarea.value.trim();
+    if (!value) return;
 
-  const li = document.createElement("li");
-  const message = document.createElement("span");
-  const status = document.createElement("span");
+    const li = document.createElement("li");
+    const message = document.createElement("span");
+    const status = document.createElement("span");
 
-  message.textContent = value;
-  status.className = "pill";
-  status.textContent = "Pendente";
+    message.textContent = value;
+    status.className = "pill";
+    status.textContent = "Pendente";
 
-  li.append(message, status);
+    li.append(message, status);
 
-  const empty = inbox.querySelector(".empty");
-  if (empty) empty.remove();
+    const empty = inbox.querySelector(".empty");
+    if (empty) empty.remove();
 
-  inbox.prepend(li);
-  textarea.value = "";
-  textarea.focus();
+    inbox.prepend(li);
+    textarea.value = "";
+    textarea.focus();
+  };
+}
+
+const contactSection = document.getElementById("contato");
+const contactLinks = document.querySelectorAll('a[href="#contato"]');
+const contactCloseButton = document.querySelector(".contact-close");
+const contactSuccessButton = document.querySelector(".contact-success__button");
+const contactHeading = document.querySelector(".contact-heading h2");
+
+const closeContactSection = () => {
+  if (!contactSection) return;
+  contactSection.hidden = true;
+  contactSection.classList.remove("is-open");
+  document.body.style.overflow = "";
+  if (contactSuccess) contactSuccess.hidden = true;
+  if (contactForm) contactForm.reset();
+  if (contactHeading) contactHeading.textContent = "Fale com a MovSup";
+  if (contactForm) contactForm.style.display = "grid";
+  contactSection.classList.remove("show-success");
 };
+
+const openContactSection = () => {
+  if (!contactSection) return;
+  contactSection.hidden = false;
+  contactSection.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+  if (contactSuccess) contactSuccess.hidden = true;
+  if (contactHeading) contactHeading.textContent = "Fale com a MovSup";
+  if (contactForm) contactForm.style.display = "grid";
+  contactSection.classList.remove("show-success");
+  setTimeout(() => {
+    contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 0);
+};
+
+contactLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    openContactSection();
+  });
+});
+
+if (contactCloseButton) {
+  contactCloseButton.addEventListener("click", closeContactSection);
+}
+
+if (contactSuccessButton) {
+  contactSuccessButton.addEventListener("click", closeContactSection);
+}
+
+if (contactForm && contactSuccess) {
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+
+    contactSuccess.hidden = false;
+    contactForm.style.display = "none";
+    contactSection.classList.add("show-success");
+    if (contactHeading) {
+      contactHeading.textContent = "Obrigado por entrar em contato.";
+    }
+    const successText = contactSuccess.querySelector("p");
+    if (successText) {
+      successText.textContent = "E-mail enviado. Aguarde a nossa resposta. Agradecemos desde já, MovSup.";
+    }
+  });
+}
+
+if (contactSection) {
+  contactSection.addEventListener("click", (event) => {
+    if (event.target === contactSection) closeContactSection();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && contactSection && !contactSection.hidden) {
+    closeContactSection();
+  }
+});
 
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightbox-image");

@@ -85,7 +85,7 @@
       <section id="problema">
         <div class="w">
           <h2>O problema que ninguém contou</h2>
-          <div class="two">
+          <div class="problema-stack">
             <p class="q">
               Como melhorar um sistema se os problemas dos usuários não chegam
               até quem o desenvolveu?
@@ -270,20 +270,15 @@
       <section id="viabilidade" class="section-tight">
         <div class="w">
           <div class="viabilidade-inner">
-            <h2>Viabilidade</h2>
+            <h2>Investimento Inicial</h2>
             <div class="price-block">
-              <p class="mu section-copy-tight">Investimento inicial:</p>
               <div class="price single">
                 <div class="highlight">
-                  <b>R$ 700,00</b>
+                  <b>R$ 700</b>
                   <span>por mês</span>
                 </div>
               </div>
             </div>
-            <p>
-              A MovSup é simples, acessível e integrada diretamente aos sistemas,
-              feita para pequenas software houses.
-            </p>
           </div>
         </div>
       </section>
@@ -307,6 +302,64 @@
       </section>
     </main>
 
+    <section id="contato" class="contact-section" hidden>
+      <div class="w contact-wrap">
+        <div class="contact-heading">
+          <button class="contact-close" type="button" aria-label="Fechar formulário de contato">
+            ×
+          </button>
+          <p class="eyebrow">Entre em contato</p>
+          <h2>Fale com a MovSup</h2>
+        </div>
+
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="field-grid">
+            <label>
+              <span>Nome</span>
+              <input type="text" name="nome" placeholder="Seu nome" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="seu@email.com" required />
+            </label>
+            <label>
+              <span>Empresa</span>
+              <input type="text" name="empresa" placeholder="Nome da empresa" required />
+            </label>
+            <label>
+              <span>Interesse</span>
+              <select name="interesse" required>
+                <option value="">Selecione</option>
+                <option value="demo">Quero uma demonstração</option>
+                <option value="integracao">Preciso de integração</option>
+                <option value="suporte">Quero suporte</option>
+                <option value="outro">Outro</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="full-width">
+            <span>Mensagem</span>
+            <textarea
+              name="mensagem"
+              rows="5"
+              placeholder="Conte um pouco sobre o seu projeto ou desafio..."
+              required
+            ></textarea>
+          </label>
+
+          <button type="submit" class="contact-submit">Enviar mensagem</button>
+
+          <div class="contact-success" id="contact-success" aria-live="polite" hidden>
+            <div class="contact-success__content">
+              <p>E-mail enviado. Aguarde a nossa resposta. Agradecemos desde já, MovSup.</p>
+              <button type="button" class="contact-success__button">OK</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
     <footer>
       <div class="w footer-wrap">
         <div class="footer-brand">
@@ -319,9 +372,7 @@
             Guilherme König, João Rodrigues, Lara Biezus, Lorenzo Farina, Ramon
             Petry e Samuel Teixeira.
           </p>
-          <a class="footer-contact" href="mailto:movsupx@gmail.com">
-            Entre em contato
-          </a>
+          <a class="footer-contact" href="#contato">Entre em contato</a>
         </div>
       </div>
     </footer>
